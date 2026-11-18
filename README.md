@@ -119,6 +119,7 @@ The multiplier `α_MC` is fitted **once** from target-free, jammer-free Monte Ca
 | `r`, `S` | `r = z_i / μ̂_i` for one noise-only calibration CUT; `S` is the pooled collection of these ratios across all calibration cubes and eligible cells. |
 | `Q_p^higher(S)` | Empirical quantile of `S` at probability `p = 1 − P_FA,target`, using NumPy's `method="higher"`. |
 | `P_FA,target` | Requested false-alarm probability per tested cell, set to `10⁻⁶`; it is a calibration target, not a guaranteed measured rate. |
+
 Here `higher` means the first sampled ratio at or above the requested quantile. The desired false-alarm probability applies **per tested cell**, not per frame, target, or jammer column. Another **500 fresh cubes** measure the resulting cell false-alarm rate and the false jammer-column rate; these validation cubes are not used to choose `α_MC`. The fixed calibration seed makes the fitted multiplier reproducible. It is an **empirical** threshold for this noise model, not a universal analytic CA-CFAR multiplier. An example screenshot may show a different value because it was generated from an earlier run.
 
 ![Example measured signal, local threshold, and detections](Photos_videos/montecarlo_CFAR.png)
