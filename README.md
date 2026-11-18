@@ -77,7 +77,7 @@ The array experiment in `config.py`, `functions.py`, `sim.py`, and `live_sim.py`
 ```math
 w_n(\theta_s)=\exp\!\left(j\frac{2\pi}{\lambda_0}x_n\sin\theta_s\right),
 \qquad
-B_{\theta_s}[k]\propto\operatorname{FFTshift}\{\operatorname{FFT}_n(w_n)\}[k].
+B_{\theta_s}[k]\propto\mathrm{FFTshift}\{\mathrm{FFT}_n(w_n)\}[k].
 ```
 
 The FFT maps the array aperture to an idealized angular radiation pattern. The normalization makes the largest modeled response unity. This is a far-field, narrowband, scalar model: it omits element patterns, mutual coupling, calibration errors, propagation loss, multipath, polarization, receiver saturation, and real transmit/receive hardware.
