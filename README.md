@@ -66,7 +66,7 @@ The title reports frame number, chosen target count, and counts by track status.
 
 [![Steered-array scan still](README_assets/Graph_sim_steered_array_sweep.png)](Photos_videos/Graph_sim_steered_array_sweep.mp4)
 
-GitHub displays the full-duration GIF animations directly at a reduced frame rate; clicking them opens the original MP4 files at their original quality. GitHub's README renderer does not reliably embed an MP4 player, so the full recordings are linked as repository files. **Check GitHub's file size limits before publishing:** `Target_sim.mp4` is about 61 MB.
+GitHub displays the full-duration GIF animations directly at a reduced frame rate; clicking them opens the original MP4 files at their original quality. GitHub's README renderer does not reliably embed an MP4 player, so the full recordings are linked as repository files. GitHub warns that `Target_sim.mp4` exceeds its recommended 50 MB size; the full video is included in this repository.
 
 ## How the simulation works
 
@@ -101,7 +101,7 @@ For every eligible cell under test (CUT) at angle-bin index `i`, the program est
 The multiplier `α_MC` is fitted **once** from target-free, jammer-free Monte Carlo backgrounds that match the simulation's clutter and receiver-noise distributions. For each calibration cell, the code computes the ratio `r = z_i / μ̂_i`; it collects ratios from **1,000** independent cubes and selects the upper empirical quantile:
 
 ```math
-\alpha_{\mathrm{MC}}=Q^{\mathrm{higher}}_{,1-P_{\mathrm{FA,target}}}
+\alpha_{\mathrm{MC}}=Q^{\mathrm{higher}}_{1-P_{\mathrm{FA,target}}}
 \left(\left\{\frac{z_i}{\widehat{\mu}_i}\right\}_{\mathrm{noise\ only}}\right),
 \qquad P_{\mathrm{FA,target}}=10^{-6}.
 ```
