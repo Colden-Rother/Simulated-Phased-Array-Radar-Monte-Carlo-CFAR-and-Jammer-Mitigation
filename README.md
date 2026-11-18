@@ -88,7 +88,7 @@ These amplitudes and speeds are **display units**, not calibrated radar cross se
 
 ### 2. Monte Carlo calibrated CA-CFAR
 
-For every eligible cell under test (CUT) at angle-bin index `i`, the program estimates local background from **10 training cells** (five on each side) and excludes **two guard cells** (one on each side) plus the CUT. The first and last six angle bins have no full window and are not tested. With magnitude `z_i`, training set `T_i`, and `N_T=10`:
+For every eligible cell under test (CUT) at angle-bin index `i`, the program estimates local background from **10 training cells** (five on each side) and excludes **two guard cells** (one on each side) plus the CUT. The first and last six angle bins have no full window and are not tested. The cell test is:
 
 ```math
 \widehat{\mu}_i=\frac{1}{N_T}\sum_{j\in T_i} z_j,
@@ -106,6 +106,19 @@ The multiplier `α_MC` is fitted **once** from target-free, jammer-free Monte Ca
 \qquad P_{\mathrm{FA,target}}=10^{-6}.
 ```
 
+| Symbol | Meaning in this implementation |
+| --- | --- |
+| `i` | Angle-bin index of the cell under test (CUT) in one range or scan row. Only bins with a complete window are tested. |
+| `j` | Angle-bin index of a training cell around that CUT. |
+| `z_i`, `z_j` | Nonnegative received magnitudes at the CUT and a training cell, respectively. The code applies `abs` to simulated received values before CFAR. |
+| `T_i` | The 10 training-bin indices for CUT `i`: five on each side, at offsets −6 through −2 and +2 through +6. The CUT and its immediate neighbors (the two guard cells) are excluded. |
+| `N_T` | Number of training cells, fixed at 10. |
+| `μ̂_i` | Local background estimate: the arithmetic mean of the 10 training magnitudes. |
+| `γ_i` | Detection threshold for CUT `i`, equal to `α_MC × μ̂_i`. A hit requires `z_i > γ_i`. |
+| `α_MC` | Single threshold multiplier fitted from independent noise-only Monte Carlo cubes, then reused for detection. |
+| `r`, `S` | `r = z_i / μ̂_i` for one noise-only calibration CUT; `S` is the pooled collection of these ratios across all calibration cubes and eligible cells. |
+| `Q_p^higher(S)` | Empirical quantile of `S` at probability `p = 1 − P_FA,target`, using NumPy's `method="higher"`. |
+| `P_FA,target` | Requested false-alarm probability per tested cell, set to `10⁻⁶`; it is a calibration target, not a guaranteed measured rate. |
 Here `higher` means the first sampled ratio at or above the requested quantile. The desired false-alarm probability applies **per tested cell**, not per frame, target, or jammer column. Another **500 fresh cubes** measure the resulting cell false-alarm rate and the false jammer-column rate; these validation cubes are not used to choose `α_MC`. The fixed calibration seed makes the fitted multiplier reproducible. It is an **empirical** threshold for this noise model, not a universal analytic CA-CFAR multiplier. An example screenshot may show a different value because it was generated from an earlier run.
 
 ![Example measured signal, local threshold, and detections](Photos_videos/montecarlo_CFAR.png)
